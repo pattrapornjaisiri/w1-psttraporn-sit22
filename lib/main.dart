@@ -224,55 +224,68 @@ class MyHomePage extends StatelessWidget {
 
 // ---------------------- หน้าที่สอง (SecondPage) ----------------------
 
-/// คลาสหน้าที่สอง ใช้แสดงโปรไฟล์ในรูปแบบโซเชียล
+/// หน้าที่สองของแอป
+/// ใช้แสดงหน้าโปรไฟล์ในรูปแบบโซเชียลมีเดีย
+/// ใช้ StatelessWidget เพราะหน้านี้ไม่มีการเปลี่ยนแปลงข้อมูลระหว่างการใช้งาน
 class SecondPage extends StatelessWidget {
   const SecondPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF8EFF4), // สีพื้นหลังของหน้า
+      // Scaffold เป็นโครงสร้างหลักของหน้าจอ
+      // ใช้จัดการ AppBar, body และพื้นหลังของหน้า
+      backgroundColor: const Color(0xFFF8EFF4),
 
-      // AppBar ด้านบน พร้อมปุ่มย้อนกลับ
+      // ------------------ AppBar ------------------
+      // AppBar ใช้แสดงแถบด้านบนของหน้าจอ
       appBar: AppBar(
-        backgroundColor: Color(0xFFF8EFF4),
-        elevation: 0, // ไม่แสดงเงาใต้ AppBar
+        backgroundColor: const Color(0xFFF8EFF4),
+        elevation: 0, // ปิดเงาเพื่อให้ UI ดูเรียบ
 
-        // ปุ่มย้อนกลับไปหน้าก่อนหน้า
+        // leading คือ widget ด้านซ้ายของ AppBar
+        // ใช้เป็นปุ่มย้อนกลับไปหน้าก่อนหน้า
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context), // กลับไปหน้าเดิม
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+          // Navigator.pop ใช้ย้อนกลับไปยังหน้าเดิม
         ),
       ),
 
+      // SafeArea ป้องกันไม่ให้ UI ชนขอบจอหรือรอยบาก
       body: SafeArea(
+        // SingleChildScrollView ทำให้หน้าจอสามารถเลื่อนขึ้นลงได้
         child: SingleChildScrollView(
           child: Column(
             children: [
 
-              // ----- ส่วนหัว แสดงรูปโปรไฟล์และสถิติ -----
+              // ================== ส่วนหัวโปรไฟล์ ==================
+              // Row ใช้จัด layout แนวนอน
+              // ส่วนนี้ใช้แสดงรูปโปรไฟล์และข้อมูลสถิติ
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 child: Row(
                   children: [
 
-                    // แสดงรูปโปรไฟล์เป็นวงกลม
+                    // ClipOval ใช้ตัดรูปภาพให้เป็นวงกลม
+                    // Image.network ใช้โหลดรูปจากอินเทอร์เน็ต
                     ClipOval(
                       child: Image.network(
                         "https://i.pinimg.com/736x/60/c2/b4/60c2b4ee73200c31d9c9319fe39ad4b3.jpg",
                         width: 70,
                         height: 70,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.cover, // ปรับรูปให้เต็มกรอบ
                       ),
                     ),
 
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
 
-                    // แสดงตัวเลขสถิติ เช่น ผู้ติดตาม
+                    // Expanded ใช้ขยายพื้นที่ส่วนสถิติให้เต็มพื้นที่ที่เหลือ
                     Expanded(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          // เรียกใช้ฟังก์ชัน profileStat เพื่อแสดงสถิติ
                           profileStat("5", "กำลังติดตาม"),
                           profileStat("828.1 K", "ผู้ติดตาม"),
                           profileStat("329.9 K", "ถูกใจและบันทึก"),
@@ -283,47 +296,54 @@ class SecondPage extends StatelessWidget {
                 ),
               ),
 
-              // แสดงชื่อพร้อมไอคอนยืนยันตัวตน
+              // ================== ชื่อผู้ใช้ ==================
+              // Row ใช้จัดชื่อและไอคอนให้อยู่ในแนวนอนเดียวกัน
               Row(
-                children: [
+                children: const [
                   SizedBox(width: 20),
                   Text(
                     "Pattraporn Jaisiri",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(width: 5),
+                  // ไอคอน verified ใช้ตกแต่ง UI
                   Icon(Icons.verified, color: Colors.blue, size: 22),
                 ],
               ),
 
-              // แสดงชื่อผู้ใช้ (username)
+              // ================== Username ==================
               Row(
-                children: [
+                children: const [
                   SizedBox(width: 20),
-                  Text("@Dollytoey__",
-                      style: TextStyle(fontSize: 15, color: Colors.black54)),
-                  Icon(Icons.keyboard_arrow_down_rounded)
+                  Text(
+                    "@Dollytoey__",
+                    style: TextStyle(fontSize: 15, color: Colors.black54),
+                  ),
+                  Icon(Icons.keyboard_arrow_down_rounded),
                 ],
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
-              // ------------------ ปุ่มติดตามและปุ่มแชร์ ------------------
+              // ================== ปุ่มติดตาม + ปุ่มแชร์ ==================
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
 
-                    // ปุ่มติดตาม
+                    // Expanded ใช้ให้ปุ่มติดตามขยายเต็มพื้นที่
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 13),
+                        padding: const EdgeInsets.symmetric(vertical: 13),
+
+                        // BoxDecoration ใช้ตกแต่งกล่องให้ดูเหมือนปุ่ม
                         decoration: BoxDecoration(
                           color: Colors.yellow,
                           borderRadius: BorderRadius.circular(6),
                         ),
+
                         alignment: Alignment.center,
-                        child: Text(
+                        child: const Text(
                           "ติดตาม",
                           style: TextStyle(
                             fontSize: 17,
@@ -333,36 +353,39 @@ class SecondPage extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
 
-                    // ปุ่มแชร์
+                    // ปุ่มแชร์ ใช้ Container + Icon
                     Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
                         color: Colors.white,
-                        shape: BoxShape.circle,
+                        shape: BoxShape.circle, // ทำให้เป็นวงกลม
                       ),
-                      child: Icon(Icons.share),
+                      child: const Icon(Icons.share),
                     )
                   ],
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-              // ------------------ แสดงรูปภาพ 2 ช่อง ------------------
+              // ================== รูปโพสต์ ==================
+              // Row ใช้จัดรูปภาพ 2 รูปในแนวนอน
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   children: [
-                    // รูปด้านซ้าย
+
+                    // Expanded ทำให้รูปขยายเท่ากัน
                     Expanded(
                       child: Container(
                         height: 180,
                         decoration: BoxDecoration(
-                          image: DecorationImage(
+                          image: const DecorationImage(
                             image: NetworkImage(
-                                "https://i.pinimg.com/736x/08/aa/b7/08aab7d00dfc941ca756a9cebcfea5e1.jpg"),
+                              "https://i.pinimg.com/736x/08/aa/b7/08aab7d00dfc941ca756a9cebcfea5e1.jpg",
+                            ),
                             fit: BoxFit.cover,
                           ),
                           borderRadius: BorderRadius.circular(8),
@@ -370,16 +393,16 @@ class SecondPage extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
 
-                    // รูปด้านขวา
                     Expanded(
                       child: Container(
                         height: 180,
                         decoration: BoxDecoration(
-                          image: DecorationImage(
+                          image: const DecorationImage(
                             image: NetworkImage(
-                                "https://i.pinimg.com/736x/48/9b/ae/489bae53f505f450c0df7e71095f044c.jpg"),
+                              "https://i.pinimg.com/736x/48/9b/ae/489bae53f505f450c0df7e71095f044c.jpg",
+                            ),
                             fit: BoxFit.cover,
                           ),
                           borderRadius: BorderRadius.circular(8),
@@ -390,7 +413,7 @@ class SecondPage extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
             ],
           ),
         ),
@@ -398,22 +421,20 @@ class SecondPage extends StatelessWidget {
     );
   }
 
-  /// ฟังก์ชัน profileStat ใช้สร้างคอลัมน์แสดงตัวเลขสถิติและข้อความกำกับ
+  // ================== ฟังก์ชันแสดงสถิติ ==================
+  /// profileStat ใช้สร้าง Column สำหรับแสดง
+  /// ตัวเลขสถิติและข้อความกำกับด้านล่าง
   Widget profileStat(String value, String label) {
     return Column(
       children: [
-        // แสดงค่าตัวเลข เช่น 828.1 K
         Text(
           value,
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
         ),
-
-        SizedBox(height: 3),
-
-        // แสดงข้อความกำกับ เช่น ผู้ติดตาม
+        const SizedBox(height: 3),
         Text(
           label,
-          style: TextStyle(fontSize: 12, color: Colors.black87),
+          style: const TextStyle(fontSize: 12, color: Colors.black87),
         ),
       ],
     );
